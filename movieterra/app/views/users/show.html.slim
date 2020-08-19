@@ -1,0 +1,28 @@
+p#notice = notice
+
+.user
+  h1 = @user.name
+
+  .section.tickets
+    h2 Рекомендации
+
+  .section.tickets
+    h2 Посещённые
+
+    .tickets-list
+      - @user.tickets.each do |ticket|
+        .ticket
+          .title
+            = ticket.movie
+          .poster
+            - if ticket.poster_url.present?
+              = image_tag ticket.poster_url
+
+    = form_with model: [@user, @user.tickets.build] do |f|
+      .field
+        = f.label :tmdb_id
+        = f.number_field :tmdb_id
+
+      .actions = f.submit
+
+  = link_to 'Back', users_path

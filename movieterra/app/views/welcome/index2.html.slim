@@ -1,0 +1,82 @@
+header
+  .container
+    .heading
+      span.name Movieterra
+      span  — подбор интересных фильмов в кинотеатре
+
+    .search
+      .form
+        = text_field 'title', '', placeholder: 'Какие фильмы вы смотрели в последнее время?', autofocus: true
+
+      - if @user.tickets.present?
+        .tickets
+          - @user.tickets.reverse.each do |ticket|
+            = link_to ticket, method: :delete, class: 'ticket' do
+              .poster
+                - if ticket.poster_url.present?
+                  = image_tag ticket.poster_url
+
+              .title
+                = ticket.movie_title
+
+
+- if @user.email.present?
+  .section.subscribe
+    .container
+      .subscribed
+        .email = @user.email
+        = link_to 'Сменить пользователя', session_path, method: :delete
+
+- elsif @recommendation.present?
+  - if @user.email.nil?
+    .section.subscribe
+      .container
+        h2.heading Получать регулярно подборку интересных фильмов
+
+        .email
+          = form_with model: @user do |f|
+            = f.text_field :email, placeholder: 'Электронная почта'
+            = button_tag 'Получать подборку'
+
+- if @recommendation.present?
+  .section.recommendation
+    .container
+      .recommend
+        h2.heading Вот на что бы мы вам посоветовали сходить в данный момент
+
+        .movies
+          - @recommendation.each do |movie|
+            = link_to movie[:url], class: 'movie' do
+              .poster
+                = image_tag movie[:poster_url]
+              .box
+                h3.title = movie[:title]
+                / .country = movie[:country]
+                .genre = movie[:genre]
+                .length = movie[:length]
+                .description = movie[:description]
+
+
+.section.instructions
+  .container
+    h2.heading Как это работает
+    ul
+      li
+        .fa.fa-film
+        .heading Выберите несколько фильмов
+        p Чем больше укажете фильмов — тем точнее рекомендация
+
+      li
+        .fa.fa-user
+        .heading Получите персональную рекомендацию
+        p Рекомендации учитывают жанр, актёрский и режиссёрский составы, и пару секретных ингредиентов
+
+      li
+        .fa.fa-envelope
+        .heading Подпишитесь на уведомления о новых фильмах
+        p Мы уведомим вас, как только в кинотеатрах появится что-то стоящее
+
+
+footer
+  .container
+    p Movieterra, 2017

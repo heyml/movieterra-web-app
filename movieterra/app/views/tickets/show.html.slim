@@ -1,0 +1,12 @@
+p#notice = notice
+
+p
+  strong User:
+  = @ticket.user
+p
+  strong Tmdb:
+  = @ticket.tmdb_id
+
+= link_to 'Edit', edit_ticket_path(@ticket)
+'  |
+= link_to 'Back', tickets_path

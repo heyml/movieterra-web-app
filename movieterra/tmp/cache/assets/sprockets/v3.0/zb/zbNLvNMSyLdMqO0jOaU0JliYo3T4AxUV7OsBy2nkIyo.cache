@@ -1,0 +1,41 @@
+I"3(function() {
+  $(function() {
+    $('.search input').autocomplete({
+      source: function(request, response) {
+        var api_key, language, query;
+        api_key = '00d5f265812d91c1267450ffc85e11f6';
+        language = 'ru';
+        query = request.term;
+        return $.get('//api.themoviedb.org/3/search/movie', {
+          api_key: api_key,
+          language: language,
+          query: query
+        }, function(data) {
+          return response($.map(data.results, function(item) {
+            return {
+              label: item.title,
+              id: item.id,
+              year: item.release_date
+            };
+          }));
+        });
+      },
+      select: function(event, ui) {
+        return $.post('/tickets', {
+          ticket: {
+            movie_id: ui.item.id
+          }
+        }).done(function() {
+          return location.reload();
+        });
+      },
+      minLength: 2
+    });
+    return $('.recommend button').on('click', function() {
+      $('.recommendation').show();
+      return $('.recommend').hide();
+    });
+  });
+
+}).call(this);
+:ET

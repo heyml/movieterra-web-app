@@ -1,0 +1,13 @@
+doctype html
+html
+  head
+    title Movies
+    = csrf_meta_tags
+
+    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = stylesheet_link_tag '//fonts.googleapis.com/css?family=PT+Sans|PT+Sans+Caption:400,700|PT+Sans+Narrow'
+    = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+
+  body
+    #root
+      = yield
